@@ -75,3 +75,17 @@ uint64 sys_uptime(void) {
     release(&tickslock);
     return xticks;
 }
+
+// lab2 - trace system call: hint 3
+// add a sys_trace() function in kernel/sysproc.c
+uint64 sys_trace() {
+  int n;
+  if (argint(0, &n) < 0) {
+    return -1;
+  }
+
+  struct proc *p = myproc();
+  p->trace_mask = n;
+
+  return 0;
+}
