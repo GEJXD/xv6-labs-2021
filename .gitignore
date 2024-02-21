@@ -22,4 +22,4 @@ xv6.out*
 submissions/
 ph
 barrier
-.cache
+.cache/
