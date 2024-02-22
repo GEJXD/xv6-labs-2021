@@ -72,3 +72,22 @@ void *kalloc(void) {
         memset((char *)r, 5, PGSIZE); // fill with junk
     return (void *)r;
 }
+
+// lab2 - sysinfo system call:
+// return the number of bytes of free memory.
+uint64 freemem() {
+  struct run *r;
+  acquire(&kmem.lock);
+  r = kmem.freelist;
+
+  uint64 free_size = 0;
+  while (r) {
+    if (!r) break;
+    free_size += PGSIZE;
+    r = r->next;
+  }
+
+  release(&kmem.lock);
+
+  return free_size;
+}
