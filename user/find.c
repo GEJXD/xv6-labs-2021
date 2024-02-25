@@ -27,7 +27,7 @@ void find(char *path, char *fileName) {
     }
 
     // strlen(path) + 1 表示path的长度 + '\0'
-    // dirsiz 是文件的名字，不足14后面补全空格, 见kernel/fs.h 54行
+    // DIRSIZ 是文件的名字长度，不足14在后面补全空格, 见kernel/fs.h 54行
 
     // xv6 支持的文件缓存最大只有512B.
     char buf[512];
@@ -48,7 +48,7 @@ void find(char *path, char *fileName) {
     while (read(fd, &de, sizeof(de)) == sizeof(de)) {
         if (de.inum == 0)
             continue;
-        // p指向buf末位的后一个位置，所以等于在buf后面添加了de.name
+        // p指向buf末位的后一个位置，在字符串buf后面拼接了de.name
         memmove(p, de.name, DIRSIZ);
         p[DIRSIZ] = 0;
 
