@@ -118,7 +118,7 @@ found:
     }
 
     // lab3 - execcise 1 - hint 2
-    // Allocate a usyscall page
+    // allocate a strcture usyspage
     if ((p->usyspage = (struct usyscall *)kalloc()) == 0) {
         freeproc(p);
         release(&p->lock);
