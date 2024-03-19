@@ -409,7 +409,7 @@ void vmprint(pagetable_t pagetable, int depth) {
                 printf("..%s", j == depth ? "" : " ");
             printf("%d: pte %p pa %p\n", i, pte, PTE2PA(pte));
             if ((pte & (PTE_R | PTE_W | PTE_X)) == 0) {
-                uint64 child = PTE2PA(pte);
+                pagetable_t child = (pagetable_t)PTE2PA(pte);
                 vmprint((pagetable_t)child, depth + 1);
             }
         }
