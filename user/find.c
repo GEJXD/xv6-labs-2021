@@ -6,7 +6,7 @@
 #   Create Time   : 2024-08-14 21:55:40
 #   Describe      : Lab utils - find (moderate)
 #
-#   Last Modified : 2024-08-17 15:48:36
+#   Last Modified : 2024-08-17 16:15:51
 # ====================================================*/
 
 #include "kernel/types.h"
@@ -36,7 +36,7 @@ void find(char* path, char* filename) {
     char buf[512];
     
     // strlen(path) + 1 表示path的长度 + '\0'
-    // DIRSIZ 是文件名长度，不足14在后面补全空格, 见kernel/fs.h 54行
+    // DIRSIZ 是文件名最大长度, 见kernel/fs.h 54行
     // 最后还要在末位加上`/`，e.g. code/user -> code/user/
     if (strlen(path) + 1 + DIRSIZ + 1 > sizeof buf) {
         fprintf(2, "find: path too long.\n");
