@@ -1,47 +1,77 @@
-xv6 is a re-implementation of Dennis Ritchie's and Ken Thompson's Unix
-Version 6 (v6).  xv6 loosely follows the structure and style of v6,
-but is implemented for a modern RISC-V multiprocessor using ANSI C.
 
-ACKNOWLEDGMENTS
+## 前置准备
 
-xv6 is inspired by John Lions's Commentary on UNIX 6th Edition (Peer
-to Peer Communications; ISBN: 1-57398-013-7; 1st edition (June 14,
-2000)). See also https://pdos.csail.mit.edu/6.828/, which
-provides pointers to on-line resources for v6.
+根据课程官网的要求，需要看完`Lecture 1`,阅读完教材第一章$Operation \space System \space interfaces$。
 
-The following people have made contributions: Russ Cox (context switching,
-locking), Cliff Frey (MP), Xiao Yu (MP), Nickolai Zeldovich, and Austin
-Clements.
+此外，实验手册中的`Hints`很重要，大多数实验跟着提示一步一步实现都能完成。
 
-We are also grateful for the bug reports and patches contributed by
-Takahiro Aoyagi, Silas Boyd-Wickizer, Anton Burtsev, Ian Chen, Dan
-Cross, Cody Cutler, Mike CAT, Tej Chajed, Asami Doi, eyalz800, Nelson
-Elhage, Saar Ettinger, Alice Ferrazzi, Nathaniel Filardo, flespark,
-Peter Froehlich, Yakir Goaron,Shivam Handa, Matt Harvey, Bryan Henry,
-jaichenhengjie, Jim Huang, Matúš Jókay, Alexander Kapshuk, Anders
-Kaseorg, kehao95, Wolfgang Keller, Jungwoo Kim, Jonathan Kimmitt,
-Eddie Kohler, Vadim Kolontsov , Austin Liew, l0stman, Pavan
-Maddamsetti, Imbar Marinescu, Yandong Mao, , Matan Shabtay, Hitoshi
-Mitake, Carmi Merimovich, Mark Morrissey, mtasm, Joel Nider,
-OptimisticSide, Greg Price, Jude Rich, Ayan Shafqat, Eldar Sehayek,
-Yongming Shen, Fumiya Shigemitsu, Cam Tenny, tyfkda, Warren Toomey,
-Stephen Tu, Rafael Ubal, Amane Uehara, Pablo Ventura, Xi Wang, Keiichi
-Watanabe, Nicolas Wolovick, wxdao, Grant Wu, Jindong Zhang, Icenowy
-Zheng, ZhUyU1997, and Zou Chang Wei.
+## Sleep (easy)
 
-The code in the files that constitute xv6 is
-Copyright 2006-2020 Frans Kaashoek, Robert Morris, and Russ Cox.
+### Statement
+> 为xv6实现 $UNIX$ 中的`sleep`程序。`sleep`程序应该暂定用户指定的`tick`数量。`tick`是xv6内核定义的时间概念，即定时器两次中断之间的间隔时间。你的`solution`应该存储在`user/sleep.c`文件下。
 
-ERROR REPORTS
+### Hints
+- 在开始实现前，确保你阅读了`xv6 book`的第一章。
+- 查看其他xv6中实现的其他用户程序(例如`user/echo.c`、`user/grep.c`、`user/rm.c`)，了解如何从终端传递参数到程序中。
+- 如果用户忘记传递参数，`sleep`应该显示错误消息并中断。
+- 终端参数作为字符串传递，你需要用`atoi`(在`user/ulib.c`中实现)将其转换为int类型。
+- 使用`sleep`系统调用。
+- 有关实现`sleep`系统调用（见sys_sleep）的 xv6 内核代码，请参见 `kernel/sysproc.c`。有关可从用户程序调用sleep系统调用的 C 语言定义，请参见`user/user.h`；有关从用户代码跳转到内核中`sleep`的汇编代码，请参见 `user/usys.S`。
+- 确保`main`函数中使用`exit()`来退出程序。
+- 将`sleep.c`添加到`Makefile`的 `UPROGS` 中；完成后，在终端输入 `make qemu` 来编译你的程序，你就可以在 xv6 shell 中运行它了。
 
-Please send errors and suggestions to Frans Kaashoek and Robert Morris
-(kaashoek,rtm@mit.edu). The main purpose of xv6 is as a teaching
-operating system for MIT's 6.S081, so we are more interested in
-simplifications and clarifications than new features.
+### Analysis & Solution
+see [sleep.c](https://github.com/GEJXD/xv6-labs-2021/blob/util/user/sleep.c)
 
-BUILDING AND RUNNING XV6
+## PingPong (easy)
 
-You will need a RISC-V "newlib" tool chain from
-https://github.com/riscv/riscv-gnu-toolchain, and qemu compiled for
-riscv64-softmmu. Once they are installed, and in your shell
-search path, you can run "make qemu".
+### Statement
+
+> 编写一个程序，使用 UNIX 系统调用在两个进程之间通过一对管道 "ping-pong" 传送一个字节，每个方向发送一次。 父进程应向子进程发送一个字节，子进程应打印`<pid>: received ping`（`<pid>`是其进程 ID），并将一个字节写入父进程的管道，然后退出；父进程应从子进程读取该字节，打印`<pid>: received pong`，然后退出。您的解决方案应放在 user/pingpong.c 文件中。
+
+### Hints
+
+- 使用`pipe`创建管道
+- 使用`fork`创建子进程
+- 使用`read`来向管道中的读取端读取数据，`write`来向管道中的写入端写入数据。
+- 使用`getpid`来获取当前进程的PID。
+- 添加程序到`Makefile`里的`UPROGS`
+- xv6的用户程序可以使用有限的库函数，列出在`user/user.h`中。源代码(包括其他的系统调用)在`user/ulib.c`、`user/printf.c`、`user/umalloc.c`。
+
+### Analysis & Solution
+see [pingpong.c](https://github.com/GEJXD/xv6-labs-2021/blob/util/user/pingpong.c)
+
+## Primes (moderate / hard)
+
+### Statement
+> 通过`pipe`和`fork`编写一个并发版本的素数筛。这个想法来自与$Doug \space Mcllroy$，Unix管道的发明人。本页[下半部分](https://swtch.com/~rsc/thread/)的图片和周围的文字说明了如何操作。你的解决方案应该存放在`user/primes.c`文件下。
+
+第一个进程将$2$到$35$输入管道。对于每个质数，你都需要创建一个进程，该进程从左边的邻居管道中读取数据，并通过另一个管道向右边的邻居写入数据。由于xv6的文件描述符是有限的，我们只需要筛出35以内的质数。
+
+### Hints
+- 及时关闭进程不需要的文件描述符，不然程序会用完有限的文件描述符。
+- 一旦第一个进程发送了35，它应该直到所有的管道都关闭才退出，包括所有子进程、孙进程等。
+- 提示： 当写入端的管道被关闭时，`read`返回$0$。
+- 最简单的方式是直接向管道写入32位的`int`数据，而不是用`ASCII`码来处理。
+- 确保只在需要创建管道的时候创建管道。
+- 添加程序到`UPROGS`。
+
+### Analysis & Solution
+see [primes.c](https://github.com/GEJXD/xv6-labs-2021/blob/util/user/pingpong.c)
+
+## find (moderate)
+
+### Statement
+> 写一个简单版本的UNIX find程序：在文件树中找到有特定文件名的文件。你的解决方案应该放在`user/find.c`下。
+
+### Hints
+- 查看`user/ls.c`学习如何读取目录。
+- 通过递归来允许查找子目录。
+- 不要递归进`'.'`和`'..'`中。
+- 对文件系统的更改会在运行qemu是持续存在，要恢复感觉的文件系统，请运行`make clean`，然后再运行`make qemu`。
+- 你将会用到C strings。请参阅 $K \& R$第5.5节。
+- 注意不能像 Python 那样使用 `==` 比较字符串。请使用 `strcmp()` 代替。
+- 将程序添加到 Makefile 的 `UPROGS` 中。
+
+### Analysis & Solution
+see [primes.c](https://github.com/GEJXD/xv6-labs-2021/blob/util/user/find.c)
