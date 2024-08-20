@@ -36,3 +36,7 @@ entry("getpid");
 entry("sbrk");
 entry("sleep");
 entry("uptime");
+
+# Lab syscall
+# Add a stub of the new system call trace
+entry("trace");
