@@ -136,7 +136,7 @@ BreakConstructorInitializersBeforeComma: false
 BreakConstructorInitializers: BeforeComma
 
 # 每行字符的限制，0表示没有限制
-ColumnLimit: 100
+ColumnLimit: 80
 
 # 描述具有特殊意义的注释的正则表达式，它不应该被分割为多行或以其它方式改变
 # CommentPragmas: ''
@@ -221,7 +221,7 @@ ObjCSpaceBeforeProtocolList: true
 PenaltyBreakBeforeFirstCallParameter: 2
 
 # 在一个注释中引入换行的penalty
-PenaltyBreakComment: 300
+PenaltyBreakComment: 100
 
 # 第一次在<<前换行的penalty
 PenaltyBreakFirstLessLess:  120
