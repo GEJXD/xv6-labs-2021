@@ -29,6 +29,12 @@ int uptime(void);
 // usage: see user/trace.c
 int trace(int);
 
+// Lab syscall
+// Add an syscall that collects information about the running system.
+// usage: see user/sysinfotest.c
+struct sysinfo;
+int sysinfo(struct sysinfo *);
+
 // ulib.c
 int stat(const char*, struct stat*);
 char* strcpy(char*, const char*);

@@ -24,3 +24,7 @@
 // Lab syscall
 // Add a system call number of the new system call trace
 #define SYS_trace 22
+
+// Lab syscall
+// Add a system call number of the sysinfo call
+#define SYS_sysinfo 23

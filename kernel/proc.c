@@ -590,3 +590,14 @@ void procdump(void) {
         printf("\n");
     }
 }
+
+// Lab syscall
+// To collect the number of processes, add a function to kernel/proc.c
+uint32 num_proc() {
+    uint32 tot = 0;
+    struct proc* p;
+    for (p = proc;p < &proc[NPROC];p ++) {
+        if (p->state != UNUSED) tot ++;
+    }
+    return tot;
+}

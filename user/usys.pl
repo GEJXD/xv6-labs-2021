@@ -40,3 +40,7 @@ entry("uptime");
 # Lab syscall
 # Add a stub of the new system call trace
 entry("trace");
+
+# Lab syscall
+# Add a stub of the sysinfo system call
+entry("sysinfo");
