@@ -15,11 +15,11 @@ xv6是一个基于RISC-V的操作系统，提供了最基本的Unix-like系统�
 博客[MIT 6.S081 lab1：Unix utilities](https://gejxd.github.io/2024/02/25/MIT-6.S081-lab01/)
 
 ## lab-2 System call
-相关代码及解释见[syscall分支](https://github.com/GEJXD/xv6-labs-2021/tree/syscall)
+相关代码见[syscall分支](https://github.com/GEJXD/xv6-labs-2021/tree/syscall)
 
 博客[MIT 6.S081 lab2：System Calls](https://gejxd.github.io/2024/02/25/MIT-6.S081-lab02/)
 
 ## lab-3 Page tables
-相关代码及解释见[pgtbl分支](https://github.com/GEJXD/xv6-labs-2021/tree/pgtbl).
+相关代码见[pgtbl分支](https://github.com/GEJXD/xv6-labs-2021/tree/pgtbl).
 
 博客[MIT 6.S081 lab3：page tables_](https://gejxd.github.io/2024/03/13/MIT-6.S081-lab03/)
