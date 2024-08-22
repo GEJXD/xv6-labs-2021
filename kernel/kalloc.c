@@ -68,3 +68,18 @@ void* kalloc(void) {
     if (r) memset((char*)r, 5, PGSIZE);   // fill with junk
     return (void*)r;
 }
+
+// Lab syscall
+// To collect the amount of free memory, add a function to kernel/kalloc.c
+uint64 freemem() {
+    struct run* r;
+    acquire(&kmem.lock);
+    r = kmem.freelist;
+
+    uint64 tot = 0;
+    for (;r;r = r->next) tot += PGSIZE;
+
+    release(&kmem.lock);
+
+    return tot;
+}
