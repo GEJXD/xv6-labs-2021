@@ -59,8 +59,7 @@ uint64 sys_read(void) {
     int n;
     uint64 p;
 
-    if (argfd(0, 0, &f) < 0 || argint(2, &n) < 0 || argaddr(1, &p) < 0)
-        return -1;
+    if (argfd(0, 0, &f) < 0 || argint(2, &n) < 0 || argaddr(1, &p) < 0) return -1;
     return fileread(f, p, n);
 }
 
@@ -69,8 +68,7 @@ uint64 sys_write(void) {
     int n;
     uint64 p;
 
-    if (argfd(0, 0, &f) < 0 || argint(2, &n) < 0 || argaddr(1, &p) < 0)
-        return -1;
+    if (argfd(0, 0, &f) < 0 || argint(2, &n) < 0 || argaddr(1, &p) < 0) return -1;
 
     return filewrite(f, p, n);
 }
@@ -214,8 +212,7 @@ static struct inode* create(char* path, short type, short major, short minor) {
     if ((ip = dirlookup(dp, name, 0)) != 0) {
         iunlockput(dp);
         ilock(ip);
-        if (type == T_FILE && (ip->type == T_FILE || ip->type == T_DEVICE))
-            return ip;
+        if (type == T_FILE && (ip->type == T_FILE || ip->type == T_DEVICE)) return ip;
         iunlockput(ip);
         return 0;
     }
@@ -328,8 +325,7 @@ uint64 sys_mknod(void) {
 
     begin_op();
     if ((argstr(0, path, MAXPATH)) < 0 || argint(1, &major) < 0 ||
-        argint(2, &minor) < 0 ||
-        (ip = create(path, T_DEVICE, major, minor)) == 0) {
+        argint(2, &minor) < 0 || (ip = create(path, T_DEVICE, major, minor)) == 0) {
         end_op();
         return -1;
     }
@@ -413,8 +409,7 @@ uint64 sys_pipe(void) {
         return -1;
     }
     if (copyout(p->pagetable, fdarray, (char*)&fd0, sizeof(fd0)) < 0 ||
-        copyout(p->pagetable, fdarray + sizeof(fd0), (char*)&fd1, sizeof(fd1)) <
-            0) {
+        copyout(p->pagetable, fdarray + sizeof(fd0), (char*)&fd1, sizeof(fd1)) < 0) {
         p->ofile[fd0] = 0;
         p->ofile[fd1] = 0;
         fileclose(rf);

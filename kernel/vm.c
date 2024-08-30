@@ -35,11 +35,7 @@ pagetable_t kvmmake(void) {
     kvmmap(kpgtbl, KERNBASE, KERNBASE, (uint64)etext - KERNBASE, PTE_R | PTE_X);
 
     // map kernel data and the physical RAM we'll make use of.
-    kvmmap(kpgtbl,
-           (uint64)etext,
-           (uint64)etext,
-           PHYSTOP - (uint64)etext,
-           PTE_R | PTE_W);
+    kvmmap(kpgtbl, (uint64)etext, (uint64)etext, PHYSTOP - (uint64)etext, PTE_R | PTE_W);
 
     // map the trampoline for trap entry/exit to
     // the highest virtual address in the kernel.
@@ -119,8 +115,7 @@ void kvmmap(pagetable_t kpgtbl, uint64 va, uint64 pa, uint64 sz, int perm) {
 // physical addresses starting at pa. va and size might not
 // be page-aligned. Returns 0 on success, -1 if walk() couldn't
 // allocate a needed page-table page.
-int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa,
-             int perm) {
+int mappages(pagetable_t pagetable, uint64 va, uint64 size, uint64 pa, int perm) {
     uint64 a, last;
     pte_t* pte;
 
@@ -199,11 +194,8 @@ uint64 uvmalloc(pagetable_t pagetable, uint64 oldsz, uint64 newsz) {
             return 0;
         }
         memset(mem, 0, PGSIZE);
-        if (mappages(pagetable,
-                     a,
-                     PGSIZE,
-                     (uint64)mem,
-                     PTE_W | PTE_X | PTE_R | PTE_U) != 0) {
+        if (mappages(pagetable, a, PGSIZE, (uint64)mem, PTE_W | PTE_X | PTE_R | PTE_U) !=
+            0) {
             kfree(mem);
             uvmdealloc(pagetable, a, oldsz);
             return 0;

@@ -582,8 +582,7 @@ void writebig(char* s) {
             exit(1);
         }
         if (((int*)buf)[0] != n) {
-            printf(
-                "%s: read content of block %d is %d\n", s, n, ((int*)buf)[0]);
+            printf("%s: read content of block %d is %d\n", s, n, ((int*)buf)[0]);
             exit(1);
         }
         n++;
@@ -1831,8 +1830,7 @@ void fourteen(char* s) {
     close(fd);
     fd = open("12345678901234/12345678901234/12345678901234", 0);
     if (fd < 0) {
-        printf("%s: open 12345678901234/12345678901234/12345678901234 failed\n",
-               s);
+        printf("%s: open 12345678901234/12345678901234/12345678901234 failed\n", s);
         exit(1);
     }
     close(fd);
@@ -2116,10 +2114,7 @@ void sbrkmuch(char* s) {
     }
     c = sbrk(0);
     if (c != a - PGSIZE) {
-        printf("%s: sbrk deallocation produced wrong address, a %x c %x\n",
-               s,
-               a,
-               c);
+        printf("%s: sbrk deallocation produced wrong address, a %x c %x\n", s, a, c);
         exit(1);
     }
 

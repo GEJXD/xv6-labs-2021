@@ -36,9 +36,7 @@ void ls(char* path) {
     }
 
     switch (st.type) {
-    case T_FILE:
-        printf("%s %d %d %l\n", fmtname(path), st.type, st.ino, st.size);
-        break;
+    case T_FILE: printf("%s %d %d %l\n", fmtname(path), st.type, st.ino, st.size); break;
 
     case T_DIR:
         if (strlen(path) + 1 + DIRSIZ + 1 > sizeof buf) {

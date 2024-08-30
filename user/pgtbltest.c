@@ -51,8 +51,7 @@ void pgaccess_test() {
     buf[PGSIZE * 2] += 1;
     buf[PGSIZE * 30] += 1;
     if (pgaccess(buf, 32, &abits) < 0) err("pgaccess failed");
-    if (abits != ((1 << 1) | (1 << 2) | (1 << 30)))
-        err("incorrect access bits set");
+    if (abits != ((1 << 1) | (1 << 2) | (1 << 30))) err("incorrect access bits set");
     free(buf);
     printf("pgaccess_test: OK\n");
 }

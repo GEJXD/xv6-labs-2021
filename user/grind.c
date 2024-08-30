@@ -155,11 +155,9 @@ void go(int which_child) {
             if (pid == 0) {
                 fork();
                 fork();
-                if (write(fds[1], "x", 1) != 1)
-                    printf("grind: pipe write failed\n");
+                if (write(fds[1], "x", 1) != 1) printf("grind: pipe write failed\n");
                 char c;
-                if (read(fds[0], &c, 1) != 1)
-                    printf("grind: pipe read failed\n");
+                if (read(fds[0], &c, 1) != 1) printf("grind: pipe read failed\n");
                 exit(0);
             } else if (pid < 0) {
                 printf("grind: fork failed\n");
@@ -277,10 +275,7 @@ void go(int which_child) {
             wait(&st1);
             wait(&st2);
             if (st1 != 0 || st2 != 0 || strcmp(buf, "hi\n") != 0) {
-                printf("grind: exec pipeline failed %d %d \"%s\"\n",
-                       st1,
-                       st2,
-                       buf);
+                printf("grind: exec pipeline failed %d %d \"%s\"\n", st1, st2, buf);
                 exit(1);
             }
         }

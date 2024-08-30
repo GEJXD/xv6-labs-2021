@@ -79,9 +79,8 @@ void virtio_disk_init(void) {
 
     initlock(&disk.vdisk_lock, "virtio_disk");
 
-    if (*R(VIRTIO_MMIO_MAGIC_VALUE) != 0x74726976 ||
-        *R(VIRTIO_MMIO_VERSION) != 1 || *R(VIRTIO_MMIO_DEVICE_ID) != 2 ||
-        *R(VIRTIO_MMIO_VENDOR_ID) != 0x554d4551) {
+    if (*R(VIRTIO_MMIO_MAGIC_VALUE) != 0x74726976 || *R(VIRTIO_MMIO_VERSION) != 1 ||
+        *R(VIRTIO_MMIO_DEVICE_ID) != 2 || *R(VIRTIO_MMIO_VENDOR_ID) != 0x554d4551) {
         panic("could not find virtio disk");
     }
 
@@ -126,8 +125,7 @@ void virtio_disk_init(void) {
     // used = pages + 4096 -- 2 * uint16, then num * vRingUsedElem
 
     disk.desc = (struct virtq_desc*)disk.pages;
-    disk.avail =
-        (struct virtq_avail*)(disk.pages + NUM * sizeof(struct virtq_desc));
+    disk.avail = (struct virtq_avail*)(disk.pages + NUM * sizeof(struct virtq_desc));
     disk.used = (struct virtq_used*)(disk.pages + PGSIZE);
 
     // all NUM descriptors start out unused.

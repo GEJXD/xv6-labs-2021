@@ -66,11 +66,10 @@ static void install_trans(int recovering) {
     int tail;
 
     for (tail = 0; tail < log.lh.n; tail++) {
-        struct buf* lbuf =
-            bread(log.dev, log.start + tail + 1);   // read log block
-        struct buf* dbuf = bread(log.dev, log.lh.block[tail]);   // read dst
-        memmove(dbuf->data, lbuf->data, BSIZE);   // copy block to dst
-        bwrite(dbuf);                             // write dst to disk
+        struct buf* lbuf = bread(log.dev, log.start + tail + 1);   // read log block
+        struct buf* dbuf = bread(log.dev, log.lh.block[tail]);     // read dst
+        memmove(dbuf->data, lbuf->data, BSIZE);                    // copy block to dst
+        bwrite(dbuf);                                              // write dst to disk
         if (recovering == 0) bunpin(dbuf);
         brelse(lbuf);
         brelse(dbuf);
@@ -195,8 +194,7 @@ void log_write(struct buf* b) {
     int i;
 
     acquire(&log.lock);
-    if (log.lh.n >= LOGSIZE || log.lh.n >= log.size - 1)
-        panic("too big a transaction");
+    if (log.lh.n >= LOGSIZE || log.lh.n >= log.size - 1) panic("too big a transaction");
     if (log.outstanding < 1) panic("log_write outside of trans");
 
     for (i = 0; i < log.lh.n; i++) {

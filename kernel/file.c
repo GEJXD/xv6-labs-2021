@@ -98,8 +98,7 @@ int fileread(struct file* f, uint64 addr, int n) {
     if (f->type == FD_PIPE) {
         r = piperead(f->pipe, addr, n);
     } else if (f->type == FD_DEVICE) {
-        if (f->major < 0 || f->major >= NDEV || !devsw[f->major].read)
-            return -1;
+        if (f->major < 0 || f->major >= NDEV || !devsw[f->major].read) return -1;
         r = devsw[f->major].read(1, addr, n);
     } else if (f->type == FD_INODE) {
         ilock(f->ip);
@@ -122,8 +121,7 @@ int filewrite(struct file* f, uint64 addr, int n) {
     if (f->type == FD_PIPE) {
         ret = pipewrite(f->pipe, addr, n);
     } else if (f->type == FD_DEVICE) {
-        if (f->major < 0 || f->major >= NDEV || !devsw[f->major].write)
-            return -1;
+        if (f->major < 0 || f->major >= NDEV || !devsw[f->major].write) return -1;
         ret = devsw[f->major].write(1, addr, n);
     } else if (f->type == FD_INODE) {
         // write a few blocks at a time to avoid exceeding

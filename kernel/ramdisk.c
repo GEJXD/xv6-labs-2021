@@ -18,8 +18,7 @@ void ramdiskinit(void) {}
 // Else if B_VALID is not set, read buf from disk, set B_VALID.
 void ramdiskrw(struct buf* b) {
     if (!holdingsleep(&b->lock)) panic("ramdiskrw: buf not locked");
-    if ((b->flags & (B_VALID | B_DIRTY)) == B_VALID)
-        panic("ramdiskrw: nothing to do");
+    if ((b->flags & (B_VALID | B_DIRTY)) == B_VALID) panic("ramdiskrw: nothing to do");
 
     if (b->blockno >= FSSIZE) panic("ramdiskrw: blockno too big");
 

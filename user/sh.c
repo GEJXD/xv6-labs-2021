@@ -54,7 +54,7 @@ void panic(char*);
 struct cmd* parsecmd(char*);
 
 // Execute cmd.  Never returns.
-void runcmd(struct cmd* cmd) {
+__attribute__((noreturn)) void runcmd(struct cmd* cmd) {
     int p[2];
     struct backcmd* bcmd;
     struct execcmd* ecmd;
@@ -182,8 +182,7 @@ struct cmd* execcmd(void) {
     return (struct cmd*)cmd;
 }
 
-struct cmd* redircmd(struct cmd* subcmd, char* file, char* efile, int mode,
-                     int fd) {
+struct cmd* redircmd(struct cmd* subcmd, char* file, char* efile, int mode, int fd) {
     struct redircmd* cmd;
 
     cmd = malloc(sizeof(*cmd));
@@ -330,13 +329,10 @@ struct cmd* parseredirs(struct cmd* cmd, char** ps, char* es) {
 
     while (peek(ps, es, "<>")) {
         tok = gettoken(ps, es, 0, 0);
-        if (gettoken(ps, es, &q, &eq) != 'a')
-            panic("missing file for redirection");
+        if (gettoken(ps, es, &q, &eq) != 'a') panic("missing file for redirection");
         switch (tok) {
         case '<': cmd = redircmd(cmd, q, eq, O_RDONLY, 0); break;
-        case '>':
-            cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREATE | O_TRUNC, 1);
-            break;
+        case '>': cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREATE | O_TRUNC, 1); break;
         case '+':   // >>
             cmd = redircmd(cmd, q, eq, O_WRONLY | O_CREATE, 1);
             break;

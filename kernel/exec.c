@@ -7,8 +7,7 @@
 #include "defs.h"
 #include "elf.h"
 
-static int loadseg(pde_t* pgdir, uint64 addr, struct inode* ip, uint offset,
-                   uint sz);
+static int loadseg(pde_t* pgdir, uint64 addr, struct inode* ip, uint offset, uint sz);
 
 int exec(char* path, char** argv) {
     char *s, *last;
@@ -69,8 +68,7 @@ int exec(char* path, char** argv) {
         sp -= strlen(argv[argc]) + 1;
         sp -= sp % 16;   // riscv sp must be 16-byte aligned
         if (sp < stackbase) goto bad;
-        if (copyout(pagetable, sp, argv[argc], strlen(argv[argc]) + 1) < 0)
-            goto bad;
+        if (copyout(pagetable, sp, argv[argc], strlen(argv[argc]) + 1) < 0) goto bad;
         ustack[argc] = sp;
     }
     ustack[argc] = 0;
@@ -79,8 +77,7 @@ int exec(char* path, char** argv) {
     sp -= (argc + 1) * sizeof(uint64);
     sp -= sp % 16;
     if (sp < stackbase) goto bad;
-    if (copyout(pagetable, sp, (char*)ustack, (argc + 1) * sizeof(uint64)) < 0)
-        goto bad;
+    if (copyout(pagetable, sp, (char*)ustack, (argc + 1) * sizeof(uint64)) < 0) goto bad;
 
     // arguments to user main(argc, argv)
     // argc is returned via the system call return
@@ -115,8 +112,8 @@ bad:
 // va must be page-aligned
 // and the pages from va to va+sz must already be mapped.
 // Returns 0 on success, -1 on failure.
-static int loadseg(pagetable_t pagetable, uint64 va, struct inode* ip,
-                   uint offset, uint sz) {
+static int loadseg(pagetable_t pagetable, uint64 va, struct inode* ip, uint offset,
+                   uint sz) {
     uint i, n;
     uint64 pa;
 
