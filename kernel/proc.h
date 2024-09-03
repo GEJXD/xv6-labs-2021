@@ -113,4 +113,8 @@ struct proc {
     struct file* ofile[NOFILE];    // Open files
     struct inode* cwd;             // Current directory
     char name[16];                 // Process name (debugging)
+
+    // Lab pgtbl: speed up syscall
+    // used by ugetpid()
+    struct usyscall *usyspage;
 };
